@@ -1,0 +1,16 @@
+{
+    "name": "amphibee/mailhog-for-wp",
+    "description": "Zero configuration MailHog plugin for your development machine.",
+    "keywords": ["wordpress", "plugin"],
+    "homepage": "https://github.com/jstnbr/mailhog-for-wp",
+    "authors": [
+        {
+            "name": "Tareq Hasan",
+            "homepage": "https://github.com/jstnbr"
+        }
+    ],
+    "type": "wordpress-plugin",
+    "require": {
+        "php": ">=5.6"
+    }
+}
