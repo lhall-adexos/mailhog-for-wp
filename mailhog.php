@@ -10,32 +10,37 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  */
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
+
+use function Env\env;
 
 /**
  * WP MailHog
  */
-class WP_MailHog {
+class WP_MailHog
+{
 
-    function __construct() {
-        $this->define_constants();
+    function __construct()
+    {
         $this->init_phpmailer();
     }
 
     /**
      * Define constants
      *
-     * @return void
+     * @return false
      */
-    public function define_constants() {
+    public function check_constants()
+    {
 
-        if ( ! defined( 'WP_MAILHOG_HOST') ) {
-            define( 'WP_MAILHOG_HOST', '127.0.0.1' );
+        if (! env('WP_MAILHOG_HOST')) {
+            return false;
         }
 
-        if ( ! defined( 'WP_MAILHOG_PORT') ) {
-            define( 'WP_MAILHOG_PORT', 1025 );
+        if (! env('WP_MAILHOG_PORT')) {
+            return false;
         }
+        return true;
     }
 
     /**
@@ -43,13 +48,16 @@ class WP_MailHog {
      *
      * @return void
      */
-    public function init_phpmailer() {
-        add_action( 'phpmailer_init', function( $phpmailer ) {
-            $phpmailer->Host     = WP_MAILHOG_HOST;
-            $phpmailer->Port     = WP_MAILHOG_PORT;
-            $phpmailer->SMTPAuth = false;
-            $phpmailer->isSMTP();
-        } );
+    public function init_phpmailer()
+    {
+        add_action('phpmailer_init', function ($phpmailer) {
+            if ($this->check_constants()) {
+                $phpmailer->Host     = env('WP_MAILHOG_HOST');
+                $phpmailer->Port     = env('WP_MAILHOG_PORT');
+                $phpmailer->SMTPAuth = false;
+                $phpmailer->isSMTP();
+            }
+        });
     }
 }
 
